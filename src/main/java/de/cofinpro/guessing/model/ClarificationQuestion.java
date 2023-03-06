@@ -10,7 +10,7 @@ import java.util.Random;
 public record ClarificationQuestion(String text) {
     private static final Random RANDOM = new Random();
     private static final List<String> MESSAGES = List.of(
-            "Yes or no?",
+            "yes or no?",
             "I'm not sure I caught you: was it yes or no?",
             "Funny, I still don't understand, is it yes or no?",
             "Oh, it's too complicated for me: just tell me yes or no.",

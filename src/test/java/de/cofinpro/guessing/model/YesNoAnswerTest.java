@@ -1,6 +1,5 @@
 package de.cofinpro.guessing.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,14 +9,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class YesNoProcessorTest {
-
-    private YesNoProcessor processor;
-
-    @BeforeEach
-    void setup() {
-        processor = new YesNoProcessor();
-    }
+class YesNoAnswerTest {
 
     static Stream<Arguments> whenRecognizableInput_parsedCorrectly() {
         return Stream.of(
@@ -48,12 +40,14 @@ class YesNoProcessorTest {
     @ParameterizedTest
     @MethodSource
     void whenRecognizableInput_parsedCorrectly(String input, String expectedAnswer) {
-        assertEquals(expectedAnswer, processor.from(input));
+        var processor = YesNoAnswer.from(input);
+        assertNotNull(processor);
+        assertEquals(expectedAnswer, processor.text());
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"yes..", "No!!", "Yes sure", "Oops", ".no", "not sure"})
     void whenUnrecognizableInput_inputReturned(String input) {
-        assertEquals(input, processor.from(input));
+        assertNull(YesNoAnswer.from(input));
     }
 }
