@@ -31,3 +31,5 @@ Sources for all project tasks (6 stages) with tests and configurations.
 
 27.02.23 Project started. Setup of build and repo with gradle on Kotlin basis.
 
+06.03.23 Stage 1 completed. Simple language understanding, parsing and (random) reply generation.
+
