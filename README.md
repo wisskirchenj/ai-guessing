@@ -10,8 +10,8 @@ to guess an animal. Tree structures, node traversals are used.
 - Java 19
 - Lombok
 - Slf4j
-- Unit Tests with Junit-Jupiter and Mockito
-- Gradle 8.01
+- Tests with Junit-Jupiter and Mockito
+- Gradle 8.0.2
 
 ## Program description
 
@@ -33,3 +33,8 @@ Sources for all project tasks (6 stages) with tests and configurations.
 
 06.03.23 Stage 1 completed. Simple language understanding, parsing and (random) reply generation.
 
+06.03.23 Stage 2 completed. Ask for two different animals and a distinguishing fact, display learnings. 
+First phrase creation and recognition.
+
+11.03.23 Stage 3 completed. Full interactive guessing game, store learnings in binary decision tree,
+not yet persisted.

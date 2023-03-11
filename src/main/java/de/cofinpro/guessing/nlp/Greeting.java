@@ -1,4 +1,4 @@
-package de.cofinpro.guessing.model;
+package de.cofinpro.guessing.nlp;
 
 import java.time.LocalTime;
 import java.util.Comparator;

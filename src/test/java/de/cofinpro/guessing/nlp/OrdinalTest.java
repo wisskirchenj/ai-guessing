@@ -1,4 +1,4 @@
-package de.cofinpro.guessing.model;
+package de.cofinpro.guessing.nlp;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
