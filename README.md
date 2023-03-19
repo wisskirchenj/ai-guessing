@@ -8,6 +8,8 @@ to guess an animal. Tree structures, node traversals are used.
 ## Technology / External Libraries
 
 - Java 19
+- Jackson Json, Xml and Yaml Serializing
+- PicoCli - a great CLI library
 - Lombok
 - Slf4j
 - Tests with Junit-Jupiter and Mockito
@@ -38,3 +40,7 @@ First phrase creation and recognition.
 
 11.03.23 Stage 3 completed. Full interactive guessing game, store learnings in binary decision tree,
 not yet persisted.
+
+14.03.23 Stage 4 completed. Deserialize and Store the decision tree on game end and reload at startup. Allow storage
+formats JSON, YAML and XML specified by CLI-parameter and read in with picocli-library. Serialize Interface in tree
+node using `@JsonSubTypes` and `@JsonTypeInfo`-annotations

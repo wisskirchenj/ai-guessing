@@ -1,0 +1,12 @@
+---
+element: !<fact>
+  auxiliaryVerb: "is"
+  attribute: "a mammal"
+yesNode:
+  element: !<Noun>
+    text: "cat"
+    indefiniteArticle: "a"
+noNode:
+  element: !<Noun>
+    text: "shark"
+    indefiniteArticle: "a"

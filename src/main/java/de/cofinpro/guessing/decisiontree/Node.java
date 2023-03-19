@@ -1,26 +1,36 @@
 package de.cofinpro.guessing.decisiontree;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Node structure of a binary decision tree with parent connection and elements implementing QuestionProvider.
  */
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Node {
 
-    private final QuestionProvider element;
+    private QuestionProvider element;
     @Setter
+    @JsonIgnore
     private Node parent;
     private Node yesNode;
     private Node noNode;
 
+    public Node(QuestionProvider element) {
+        this.element = element;
+    }
+
+    @JsonIgnore
     public boolean isLeaf() {
         return yesNode == null && noNode == null;
     }
 
+    @JsonIgnore
     public String getQuestion() {
         return element.question();
     }

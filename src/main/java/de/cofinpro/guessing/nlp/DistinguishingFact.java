@@ -1,5 +1,6 @@
 package de.cofinpro.guessing.nlp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.cofinpro.guessing.decisiontree.QuestionProvider;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,15 +13,17 @@ import java.util.regex.Pattern;
  * distinguishing fact.
  */
 @Setter
+@Getter
 @Accessors(chain = true)
 public class DistinguishingFact implements QuestionProvider {
 
     private static final Pattern factPattern = Pattern.compile("it (is|has|can) (.*?)[.!?]?");
 
+    @JsonIgnore
     private final Noun[] animals = new Noun[2];
     private String auxiliaryVerb;
     private String attribute;
-    @Getter
+    @JsonIgnore
     private boolean trueForSecondAnimal;
 
     private DistinguishingFact setAnimals(Noun firstAnimal, Noun secondAnimal) {

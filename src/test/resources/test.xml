@@ -1,0 +1,30 @@
+<Node>
+  <element type="fact">
+    <auxiliaryVerb>is</auxiliaryVerb>
+    <attribute>a mammal</attribute>
+  </element>
+  <yesNode>
+    <element type="Noun">
+      <text>cat</text>
+      <indefiniteArticle>a</indefiniteArticle>
+    </element>
+  </yesNode>
+  <noNode>
+    <element type="fact">
+      <auxiliaryVerb>is</auxiliaryVerb>
+      <attribute>an insect</attribute>
+    </element>
+    <yesNode>
+      <element type="Noun">
+        <text>ant</text>
+        <indefiniteArticle>an</indefiniteArticle>
+      </element>
+    </yesNode>
+    <noNode>
+      <element type="Noun">
+        <text>shark</text>
+        <indefiniteArticle>a</indefiniteArticle>
+      </element>
+    </noNode>
+  </noNode>
+</Node>

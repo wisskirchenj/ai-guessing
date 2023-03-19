@@ -1,6 +1,7 @@
 package de.cofinpro.guessing.controller;
 
 import de.cofinpro.guessing.decisiontree.Node;
+import de.cofinpro.guessing.io.DataStorage;
 import de.cofinpro.guessing.nlp.ClarificationQuestion;
 import de.cofinpro.guessing.nlp.JoyExpression;
 import de.cofinpro.guessing.nlp.Noun;
@@ -9,7 +10,9 @@ import de.cofinpro.guessing.nlp.DistinguishingFact;
 import de.cofinpro.guessing.nlp.Greeting;
 import de.cofinpro.guessing.io.ConsolePrinter;
 import de.cofinpro.guessing.nlp.YesNoAnswer;
+import picocli.CommandLine;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -26,6 +29,7 @@ public class GuessingGame {
 
     private final ConsolePrinter consolePrinter;
     private final Scanner scanner;
+    private final DataStorage dataStorage = new DataStorage();
     private Node decisionTree;
 
     public GuessingGame(ConsolePrinter consolePrinter, Scanner scanner) {
@@ -36,13 +40,21 @@ public class GuessingGame {
     /**
      * entry point method, that starts the learning round.
      */
-    public void start() {
+    public void start(String[] args) throws IOException {
         sayGreeting();
-        decisionTree = promptForAnimal("Which animal do you like most?");
+        decisionTree = loadOrInitDecisionTree(args);
         sayLearningJoy();
         consolePrinter.printInfo("Let's play a game!");
         gameLoop();
+        dataStorage.saveGameTree(decisionTree);
         sayBye();
+    }
+
+    private Node loadOrInitDecisionTree(String[] args) throws IOException {
+        new CommandLine(dataStorage).setOptionsCaseInsensitive(true)
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .parseArgs(args);
+        return dataStorage.loadTree().orElseGet(() -> promptForAnimal("Which animal do you like most?"));
     }
 
     private void gameLoop() {
