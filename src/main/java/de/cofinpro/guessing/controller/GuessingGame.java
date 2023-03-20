@@ -1,23 +1,17 @@
 package de.cofinpro.guessing.controller;
 
 import de.cofinpro.guessing.decisiontree.Node;
-import de.cofinpro.guessing.io.DataStorage;
+import de.cofinpro.guessing.io.ConsolePrinter;
 import de.cofinpro.guessing.nlp.ClarificationQuestion;
+import de.cofinpro.guessing.nlp.DistinguishingFact;
 import de.cofinpro.guessing.nlp.JoyExpression;
 import de.cofinpro.guessing.nlp.Noun;
-import de.cofinpro.guessing.nlp.Bye;
-import de.cofinpro.guessing.nlp.DistinguishingFact;
-import de.cofinpro.guessing.nlp.Greeting;
-import de.cofinpro.guessing.io.ConsolePrinter;
 import de.cofinpro.guessing.nlp.YesNoAnswer;
-import picocli.CommandLine;
 
-import java.io.IOException;
 import java.util.Scanner;
 
-/**
- * controller class, which performs the interactive guessing game.
- */
+import static de.cofinpro.guessing.nlp.YesNoAnswer.Choice.YES;
+
 public class GuessingGame {
 
     private static final String DISTINGUISH_EXAMPLE_TEXT = """
@@ -27,34 +21,20 @@ public class GuessingGame {
              - It is a mammal
             """;
 
+    private Node decisionTree;
     private final ConsolePrinter consolePrinter;
     private final Scanner scanner;
-    private final DataStorage dataStorage = new DataStorage();
-    private Node decisionTree;
 
-    public GuessingGame(ConsolePrinter consolePrinter, Scanner scanner) {
+    public GuessingGame(Node decisionTree, ConsolePrinter consolePrinter, Scanner scanner) {
+        this.decisionTree = decisionTree;
         this.consolePrinter = consolePrinter;
         this.scanner = scanner;
     }
 
-    /**
-     * entry point method, that starts the learning round.
-     */
-    public void start(String[] args) throws IOException {
-        sayGreeting();
-        decisionTree = loadOrInitDecisionTree(args);
-        sayLearningJoy();
+    public Node play() {
         consolePrinter.printInfo("Let's play a game!");
         gameLoop();
-        dataStorage.saveGameTree(decisionTree);
-        sayBye();
-    }
-
-    private Node loadOrInitDecisionTree(String[] args) throws IOException {
-        new CommandLine(dataStorage).setOptionsCaseInsensitive(true)
-                .setCaseInsensitiveEnumValuesAllowed(true)
-                .parseArgs(args);
-        return dataStorage.loadTree().orElseGet(() -> promptForAnimal("Which animal do you like most?"));
+        return decisionTree;
     }
 
     private void gameLoop() {
@@ -62,11 +42,11 @@ public class GuessingGame {
             consolePrinter.printInfo("You think of an animal, and I guess it.\n" +
                                      "Press enter when you're ready.");
             scanner.nextLine();
-            play();
+            playGame();
         } while (userAnswersYes("Would you like to play again?"));
     }
 
-    private void play() {
+    private void playGame() {
         var currentNode = decisionTree;
         while (!currentNode.isLeaf()) {
             final var positiveDecision = userAnswersYes(currentNode.getQuestion());
@@ -85,18 +65,18 @@ public class GuessingGame {
 
     private void addAnimal(Node currentNode) {
         var parentForFactNode = currentNode.getParent();
-        var yesPosition = parentForFactNode != null && parentForFactNode.getYesNode() == currentNode;
-        var newAnimalNode = promptForAnimal("I give up. What animal do you have in mind?");
+        var placeAsYes = parentForFactNode != null && parentForFactNode.getYesNode() == currentNode;
+        var newAnimalNode = promptForAnimal();
         var distinguishingFactNode = buildDistinguishingFactNode(currentNode, newAnimalNode);
-        insertIntoDecisionTree(distinguishingFactNode, parentForFactNode, yesPosition);
+        insertIntoDecisionTree(distinguishingFactNode, parentForFactNode, placeAsYes);
     }
 
-    private void insertIntoDecisionTree(Node factNode, Node parent, boolean yesPosition) {
+    private void insertIntoDecisionTree(Node factNode, Node parent, boolean placeAsYes) {
         if (parent == null) {
             decisionTree = factNode;
             return;
         }
-        if (yesPosition) {
+        if (placeAsYes) {
             parent.setYesNode(factNode);
         } else {
             parent.setNoNode(factNode);
@@ -151,23 +131,15 @@ public class GuessingGame {
             consolePrinter.printInfo(new ClarificationQuestion().text());
             answer = YesNoAnswer.from(scanner.nextLine());
         }
-        return "Yes".equals(answer.text());
+        return YES.equals(answer.text());
     }
 
-    private Node promptForAnimal(String promptMessage) {
-        consolePrinter.printInfo(promptMessage);
+    private Node promptForAnimal() {
+        consolePrinter.printInfo("I give up. What animal do you have in mind?");
         return new Node(Noun.from(scanner.nextLine()));
     }
 
     private void sayLearningJoy() {
         consolePrinter.printInfo("{} I've learned so much about animals!", new JoyExpression().text());
-    }
-
-    private void sayGreeting() {
-        consolePrinter.printInfo("{}\n\nI want to learn about animals.", new Greeting().text());
-    }
-
-    private void sayBye() {
-        consolePrinter.printInfo(new Bye().text());
     }
 }

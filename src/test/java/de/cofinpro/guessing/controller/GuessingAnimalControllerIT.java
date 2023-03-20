@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @MockitoSettings
-class GuessingGameIT {
+class GuessingAnimalControllerIT {
 
     @Mock
     private Scanner scanner;
@@ -25,18 +25,18 @@ class GuessingGameIT {
     @Mock
     private ConsolePrinter printer;
 
-    private GuessingGame guessingGame;
+    private GuessingAnimalController guessingAnimalController;
 
     @BeforeEach
     void setup() {
-        guessingGame = new GuessingGame(printer, scanner);
+        guessingAnimalController = new GuessingAnimalController(printer, scanner);
     }
 
     @Test
     void stage3_example() throws IOException {
         Files.deleteIfExists(Path.of("animals.yaml"));
         when(scanner.nextLine()).thenReturn("a CAT", "", "No!", "a shark", "it is a mammal", "nope", "no way");
-        guessingGame.start(new String[]{"-type", "yaml"});
+        guessingAnimalController.start(new String[]{"-type", "yaml"});
         verify(printer).printInfo("Is it a cat?");
         verify(printer).printInfo("Is the statement correct for a shark?");
         verify(printer).printInfo("Would you like to play again?");
@@ -50,7 +50,7 @@ class GuessingGameIT {
         Files.deleteIfExists(Path.of("animals.xml"));
         when(scanner.nextLine()).thenReturn("a CAT", "", "No!", "a shark", "it is a mammal", "nope",
                 "yeah", "", "No", "nope", "the ant", "it is an insect", "yes", "n");
-        guessingGame.start(new String[]{"-type", "XML"});
+        guessingAnimalController.start(new String[]{"-type", "XML"});
         verify(printer).printInfo("Is it a cat?");
         verify(printer).printInfo(" - {}", "Is it an insect?");
         verify(printer).printInfo("Is it a mammal?");

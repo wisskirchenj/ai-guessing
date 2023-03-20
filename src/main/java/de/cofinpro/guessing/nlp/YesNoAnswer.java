@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Yes No answer record.
  */
-public record YesNoAnswer(String text) {
+public record YesNoAnswer(Choice text) {
 
     private static final Set<String> YES_OPTIONS = Set.of(
             "y", "yeah", "yes", "yep", "sure", "right", "affirmative", "correct", "indeed",
@@ -26,11 +26,16 @@ public record YesNoAnswer(String text) {
                 ? answerText.substring(0, answerText.length() - 1)
                 : answerText;
         if (YES_OPTIONS.contains(answerText)) {
-            return new YesNoAnswer("Yes");
+            return new YesNoAnswer(Choice.YES);
         }
         if (NO_OPTIONS.contains(answerText)) {
-            return new YesNoAnswer("No");
+            return new YesNoAnswer(Choice.NO);
         }
         return null;
+    }
+
+    public enum Choice {
+        YES,
+        NO
     }
 }

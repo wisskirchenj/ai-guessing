@@ -13,27 +13,27 @@ class YesNoAnswerTest {
 
     static Stream<Arguments> whenRecognizableInput_parsedCorrectly() {
         return Stream.of(
-                Arguments.of("y", "Yes"),
-                Arguments.of("  yeah", "Yes"),
-                Arguments.of("YEAH", "Yes"),
-                Arguments.of(" yeah !", "Yes"),
-                Arguments.of("you said it!", "Yes"),
-                Arguments.of(" YOU bet.", "Yes"),
-                Arguments.of("RIGHT!", "Yes"),
-                Arguments.of("Affirmative.", "Yes"),
-                Arguments.of("Indeed!", "Yes"),
-                Arguments.of("  correct .", "Yes"),
-                Arguments.of(" Sure.", "Yes"),
-                Arguments.of(" YEP.", "Yes"),
-                Arguments.of("Yes !", "Yes"),
-                Arguments.of(" n !", "No"),
-                Arguments.of("nah.", "No"),
-                Arguments.of(" no Way", "No"),
-                Arguments.of(" nOPE !", "No"),
-                Arguments.of(" I don't think so!", "No"),
-                Arguments.of("Negative", "No"),
-                Arguments.of("Yeah no !", "No"),
-                Arguments.of("no!", "No")
+                Arguments.of("y", "YES"),
+                Arguments.of("  yeah", "YES"),
+                Arguments.of("YEAH", "YES"),
+                Arguments.of(" yeah !", "YES"),
+                Arguments.of("you said it!", "YES"),
+                Arguments.of(" YOU bet.", "YES"),
+                Arguments.of("RIGHT!", "YES"),
+                Arguments.of("Affirmative.", "YES"),
+                Arguments.of("Indeed!", "YES"),
+                Arguments.of("  correct .", "YES"),
+                Arguments.of(" Sure.", "YES"),
+                Arguments.of(" YEP.", "YES"),
+                Arguments.of("Yes !", "YES"),
+                Arguments.of(" n !", "NO"),
+                Arguments.of("nah.", "NO"),
+                Arguments.of(" no Way", "NO"),
+                Arguments.of(" nOPE !", "NO"),
+                Arguments.of(" I don't think so!", "NO"),
+                Arguments.of("Negative", "NO"),
+                Arguments.of("Yeah no !", "NO"),
+                Arguments.of("no!", "NO")
         );
     }
 
@@ -42,7 +42,7 @@ class YesNoAnswerTest {
     void whenRecognizableInput_parsedCorrectly(String input, String expectedAnswer) {
         var processor = YesNoAnswer.from(input);
         assertNotNull(processor);
-        assertEquals(expectedAnswer, processor.text());
+        assertEquals(expectedAnswer, processor.text().name());
     }
 
     @ParameterizedTest
