@@ -1,0 +1,91 @@
+{
+  "element" : {
+    "type" : "fact",
+    "auxiliaryVerb" : "can",
+    "attribute" : "climb trees"
+  },
+  "yesNode" : {
+    "element" : {
+      "type" : "fact",
+      "auxiliaryVerb" : "is",
+      "attribute" : "a domestic animal"
+    },
+    "yesNode" : {
+      "element" : {
+        "type" : "fact",
+        "auxiliaryVerb" : "has",
+        "attribute" : "long arms"
+      },
+      "yesNode" : {
+        "element" : {
+          "type" : "Noun",
+          "text" : "ape",
+          "indefiniteArticle" : "an"
+        }
+      },
+      "noNode" : {
+        "element" : {
+          "type" : "Noun",
+          "text" : "cat",
+          "indefiniteArticle" : "a"
+        }
+      }
+    },
+    "noNode" : {
+      "element" : {
+        "type" : "fact",
+        "auxiliaryVerb" : "is",
+        "attribute" : "an insect"
+      },
+      "yesNode" : {
+        "element" : {
+          "type" : "Noun",
+          "text" : "bug",
+          "indefiniteArticle" : "a"
+        }
+      },
+      "noNode" : {
+        "element" : {
+          "type" : "fact",
+          "auxiliaryVerb" : "is",
+          "attribute" : "a bird"
+        },
+        "yesNode" : {
+          "element" : {
+            "type" : "Noun",
+            "text" : "blackbird",
+            "indefiniteArticle" : "a"
+          }
+        },
+        "noNode" : {
+          "element" : {
+            "type" : "Noun",
+            "text" : "wolf",
+            "indefiniteArticle" : "a"
+          }
+        }
+      }
+    }
+  },
+  "noNode" : {
+    "element" : {
+      "type" : "fact",
+      "auxiliaryVerb" : "can",
+      "attribute" : "lay eggs"
+    },
+    "yesNode" : {
+      "element" : {
+        "type" : "Noun",
+        "text" : "chicken",
+        "indefiniteArticle" : "a"
+      }
+    },
+    "noNode" : {
+      "element" : {
+        "type" : "Noun",
+        "text" : "badger",
+        "indefiniteArticle" : "a"
+      }
+    }
+  }
+}

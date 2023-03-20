@@ -1,7 +1,5 @@
 package de.cofinpro.guessing.nlp;
 
-import de.cofinpro.guessing.decisiontree.QuestionProvider;
-
 import java.util.regex.Pattern;
 
 /**
@@ -22,6 +20,11 @@ public record Noun(String text, String indefiniteArticle) implements QuestionPro
     @Override
     public String question() {
         return "Is it %s?".formatted(withIndefiniteArticle());
+    }
+
+    @Override
+    public String asStatement() {
+        return "It is %s.".formatted(withIndefiniteArticle());
     }
 
     /**

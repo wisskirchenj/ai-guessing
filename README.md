@@ -44,3 +44,7 @@ not yet persisted.
 14.03.23 Stage 4 completed. Deserialize and Store the decision tree on game end and reload at startup. Allow storage
 formats JSON, YAML and XML specified by CLI-parameter and read in with picocli-library. Serialize Interface in tree
 node using `@JsonSubTypes` and `@JsonTypeInfo`-annotations
+
+20.03.23 Stage 5 completed. Add a main menu - split GuessingGame and Controller. Add third controller class, that
+orchestrates the Knowledge Tree explore menu options. Implement 4 actions, that use - and inherit from - an abstract
+Depth First Search implementing class providing a process hook. Add TreePrintAction.

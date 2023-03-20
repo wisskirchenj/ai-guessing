@@ -1,9 +1,7 @@
-package de.cofinpro.guessing.decisiontree;
+package de.cofinpro.guessing.nlp;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import de.cofinpro.guessing.nlp.DistinguishingFact;
-import de.cofinpro.guessing.nlp.Noun;
 
 /**
  * Implementing classes are NLP elements, that can provide a question.
@@ -20,4 +18,6 @@ import de.cofinpro.guessing.nlp.Noun;
 public interface QuestionProvider {
 
     String question();
+
+    String asStatement();
 }

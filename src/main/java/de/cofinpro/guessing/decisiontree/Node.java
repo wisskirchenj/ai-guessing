@@ -2,6 +2,7 @@ package de.cofinpro.guessing.decisiontree;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.cofinpro.guessing.nlp.QuestionProvider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

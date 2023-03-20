@@ -35,7 +35,8 @@ class GuessingAnimalControllerIT {
     @Test
     void stage3_example() throws IOException {
         Files.deleteIfExists(Path.of("animals.yaml"));
-        when(scanner.nextLine()).thenReturn("a CAT", "", "No!", "a shark", "it is a mammal", "nope", "no way");
+        when(scanner.nextLine()).thenReturn("a CAT", "1", "", "No!", "a shark", "it is a mammal",
+                "nope", "no way", "0");
         guessingAnimalController.start(new String[]{"-type", "yaml"});
         verify(printer).printInfo("Is it a cat?");
         verify(printer).printInfo("Is the statement correct for a shark?");
@@ -48,8 +49,8 @@ class GuessingAnimalControllerIT {
     @Test
     void stage3_otherGame() throws IOException {
         Files.deleteIfExists(Path.of("animals.xml"));
-        when(scanner.nextLine()).thenReturn("a CAT", "", "No!", "a shark", "it is a mammal", "nope",
-                "yeah", "", "No", "nope", "the ant", "it is an insect", "yes", "n");
+        when(scanner.nextLine()).thenReturn("a CAT", "1", "", "No!", "a shark", "it is a mammal", "nope",
+                "yeah", "", "No", "nope", "the ant", "it is an insect", "yes", "n", "0");
         guessingAnimalController.start(new String[]{"-type", "XML"});
         verify(printer).printInfo("Is it a cat?");
         verify(printer).printInfo(" - {}", "Is it an insect?");

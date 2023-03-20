@@ -12,6 +12,11 @@ import java.util.Scanner;
 
 import static de.cofinpro.guessing.nlp.YesNoAnswer.Choice.YES;
 
+/**
+ * class that implements the guessing game, the core of the application. It takes a knowledge tree as constructor
+ * argument, that minimally consists of one animal node from the initial question or can contain a loaded tree
+ * stored from previous game rounds.
+ */
 public class GuessingGame {
 
     private static final String DISTINGUISH_EXAMPLE_TEXT = """
@@ -31,6 +36,10 @@ public class GuessingGame {
         this.scanner = scanner;
     }
 
+    /**
+     * entry point method for a game instance, that does the game loop over possibly several guessing rounds. Since the
+     * knowledge tree may be expanded in AI-manor during the game rounds, it is returned to the calling controller.
+     */
     public Node play() {
         consolePrinter.printInfo("Let's play a game!");
         gameLoop();
@@ -46,6 +55,10 @@ public class GuessingGame {
         } while (userAnswersYes("Would you like to play again?"));
     }
 
+    /**
+     * method implementing a single guessing round. The tree is traversed from root according to user answers.
+     * The animal may be guessed or no - in latter case the new animal and distinguishing fact is added to the tree.
+     */
     private void playGame() {
         var currentNode = decisionTree;
         while (!currentNode.isLeaf()) {

@@ -1,7 +1,6 @@
 package de.cofinpro.guessing.nlp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.cofinpro.guessing.decisiontree.QuestionProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -32,11 +31,11 @@ public class DistinguishingFact implements QuestionProvider {
         return this;
     }
 
-    private String negatedStatement(Noun animal) {
+    private String negatedStatementFor(Noun animal) {
         return " - %s %s %s.".formatted(animal.withDefiniteArticle(), negated(auxiliaryVerb), attribute);
     }
 
-    private String positiveStatement(Noun animal) {
+    private String positiveStatementFor(Noun animal) {
         return " - %s %s %s.".formatted(animal.withDefiniteArticle(), auxiliaryVerb, attribute);
     }
 
@@ -67,9 +66,9 @@ public class DistinguishingFact implements QuestionProvider {
      */
     public String learnings() {
         if (trueForSecondAnimal) {
-            return "%s%n%s".formatted(negatedStatement(animals[0]), positiveStatement(animals[1]));
+            return "%s%n%s".formatted(negatedStatementFor(animals[0]), positiveStatementFor(animals[1]));
         }
-        return "%s%n%s".formatted(positiveStatement(animals[0]), negatedStatement(animals[1]));
+        return "%s%n%s".formatted(positiveStatementFor(animals[0]), negatedStatementFor(animals[1]));
     }
 
     /**
@@ -88,5 +87,14 @@ public class DistinguishingFact implements QuestionProvider {
                 .setAuxiliaryVerb(matcher.group(1))
                 .setAttribute(matcher.group(2))
                 .setAnimals(firstAnimal, secondAnimal);
+    }
+
+    @Override
+    public String asStatement() {
+        return "It %s %s.".formatted(auxiliaryVerb, attribute);
+    }
+
+    public String asNegativeStatement() {
+        return "It %s %s.".formatted(negated(auxiliaryVerb), attribute);
     }
 }

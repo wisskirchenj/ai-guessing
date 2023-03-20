@@ -11,4 +11,8 @@ public class ConsolePrinter {
     public final void printInfo(String message, Object... arguments) {
         log.info(message, arguments);
     }
+
+    public void printError(String message, Object... arguments) {
+        log.error(message, arguments);
+    }
 }
