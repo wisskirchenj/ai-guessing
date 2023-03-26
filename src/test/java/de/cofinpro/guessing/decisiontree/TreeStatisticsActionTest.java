@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,10 +22,11 @@ class TreeStatisticsActionTest {
             - total number of statements   6
             - height of the tree           4
             - minimum depth                2
-            - average depth                3,0""";
+            - average depth                3.0""";
 
     @Test
     void whenTestJson_StatisticsReturnedCorrectly() throws IOException {
+        Locale.setDefault(Locale.ENGLISH);
         var objectMapper = new JsonMapper();
         var tree = objectMapper.readValue(new File(TEST_JSON_PATH), Node.class);
         var action = new TreeStatisticsAction(tree);
