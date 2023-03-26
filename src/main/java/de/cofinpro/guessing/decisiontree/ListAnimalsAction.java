@@ -1,6 +1,6 @@
 package de.cofinpro.guessing.decisiontree;
 
-import de.cofinpro.guessing.nlp.Noun;
+import de.cofinpro.guessing.nlp.Animal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,8 @@ public class ListAnimalsAction extends KnowledgeTreeDfs {
      */
     @Override
     protected void processNode(TraversalNodeInfo current) {
-        if (current.element() instanceof Noun animal) {
-            animals.add(animal.text());
+        if (current.element() instanceof Animal animal) {
+            animals.add(animal.withoutArticle());
         }
     }
 }

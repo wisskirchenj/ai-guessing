@@ -6,7 +6,8 @@ import de.cofinpro.guessing.decisiontree.PrintTreeAction;
 import de.cofinpro.guessing.decisiontree.SearchAnimalAction;
 import de.cofinpro.guessing.decisiontree.TreeStatisticsAction;
 import de.cofinpro.guessing.io.ConsolePrinter;
-import de.cofinpro.guessing.nlp.Noun;
+import de.cofinpro.guessing.io.ResourceProvider;
+import de.cofinpro.guessing.nlp.Animal;
 
 import java.util.stream.Collectors;
 
@@ -24,24 +25,32 @@ public class KnowledgeTreeExplorer {
         this.consolePrinter = consolePrinter;
     }
 
+    /**
+     * gets animals from ListAnimalsAction (using Depth-FirstSearch) and prints them out.
+     */
     public void listAnimals() {
         var animals = new ListAnimalsAction(knowledgeTree).getAnimals();
         var animalsText = " - " + animals.stream().sorted().collect(Collectors.joining("\n - "));
-        consolePrinter.printInfo("Here are the animals I know:\n{}", animalsText);
+        consolePrinter.printInfo("{}\n{}", ResourceProvider.INSTANCE.get("tree.list.animals"), animalsText);
     }
 
-    public void searchAnimalAndPrintInfo(Noun searchAnimal) {
+    /**
+     * searches animal facts using SearchAnimalAction (using Depth-FirstSearch) and prints the result.
+     */
+    public void searchAnimalAndPrintInfo(Animal searchAnimal) {
         var facts = new SearchAnimalAction(knowledgeTree).getFacts(searchAnimal);
         if (facts.isEmpty()) {
-            consolePrinter.printInfo("No facts about the {}.", searchAnimal.text());
+            consolePrinter.printInfo(ResourceProvider.INSTANCE
+                    .getFormatted("tree.search.noFacts", searchAnimal.withDefiniteArticle()));
         } else {
-            consolePrinter.printInfo("Facts about the {}:\n - {}", searchAnimal.text(),
+            consolePrinter.printInfo("{}\n - {}",
+                    ResourceProvider.INSTANCE.getFormatted("tree.search.facts", searchAnimal.withDefiniteArticle()),
                     String.join("\n - ", facts));
         }
     }
 
     public void printStatistics() {
-        consolePrinter.printInfo("The Knowledge Tree stats\n");
+        consolePrinter.printInfo("{}\n", ResourceProvider.INSTANCE.get("tree.stats.title"));
         var stats = new TreeStatisticsAction(knowledgeTree).getStats();
         consolePrinter.printInfo(stats.getFormatted());
     }

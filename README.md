@@ -9,6 +9,7 @@ to guess an animal. Tree structures, node traversals are used.
 
 - Java 19
 - Jackson Json, Xml and Yaml Serializing
+- Internationalization (I18n) with PropertyResourceBundles in English, German and Esperanto
 - PicoCli - a great CLI library
 - Lombok
 - Slf4j
@@ -23,7 +24,7 @@ its knowledge base by learning new facts about animals and using this informatio
 
 ## Project completion
 
-[//]: # (Project was completed on 19.06.23.)
+Project was completed on 26.03.23.
 
 ## Repository Contents
 
@@ -48,3 +49,7 @@ node using `@JsonSubTypes` and `@JsonTypeInfo`-annotations
 20.03.23 Stage 5 completed. Add a main menu - split GuessingGame and Controller. Add third controller class, that
 orchestrates the Knowledge Tree explore menu options. Implement 4 actions, that use - and inherit from - an abstract
 Depth First Search implementing class providing a process hook. Add TreePrintAction.
+
+26.03.23 Final stage 6 completed. Full internationalization (I18n) support in English, Esperanto and German added,
+with basic grammar providing pattern support, implemented using `PropertyResourceBoundle`, `java.text.MessageFormat` and 
+regexp-classes. `Locale` is set by System-Property via JVM-option `user.language`.

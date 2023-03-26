@@ -20,7 +20,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.26")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.1.1")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
 
     testCompileOnly("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.26")

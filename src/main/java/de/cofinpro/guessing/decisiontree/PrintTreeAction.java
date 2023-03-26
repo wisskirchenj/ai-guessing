@@ -1,6 +1,7 @@
 package de.cofinpro.guessing.decisiontree;
 
-import de.cofinpro.guessing.nlp.Noun;
+import de.cofinpro.guessing.io.ResourceProvider;
+import de.cofinpro.guessing.nlp.Animal;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +11,7 @@ import lombok.RequiredArgsConstructor;
  */
 public class PrintTreeAction extends KnowledgeTreeDfs {
 
-    private final StringBuilder builder= new StringBuilder("\n ");
+    private final StringBuilder builder = new StringBuilder("\n ");
 
     public PrintTreeAction(Node knowledgeTree) {
         super(knowledgeTree);
@@ -42,8 +43,8 @@ public class PrintTreeAction extends KnowledgeTreeDfs {
             }
         }
         builder.append(" ");
-        builder.append(current.element() instanceof Noun noun
-                ? noun.withIndefiniteArticle()
+        builder.append(current.element() instanceof Animal animal
+                ? animal.withIndefiniteArticle()
                 : current.element().question());
         builder.append("\n");
     }
@@ -75,10 +76,10 @@ public class PrintTreeAction extends KnowledgeTreeDfs {
     @Getter
     @RequiredArgsConstructor
     private enum Symbol {
-        YES('│'),
+        YES(ResourceProvider.INSTANCE.get("tree.print.vertical").charAt(0)),
         NO(' '),
-        YES_LAST('├'),
-        NO_LAST('└');
+        YES_LAST(ResourceProvider.INSTANCE.get("tree.print.branch").charAt(0)),
+        NO_LAST(ResourceProvider.INSTANCE.get("tree.print.corner").charAt(0));
 
         private final char value;
     }

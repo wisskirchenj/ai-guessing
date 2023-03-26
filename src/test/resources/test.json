@@ -1,67 +1,57 @@
 {
   "element" : {
     "type" : "fact",
-    "auxiliaryVerb" : "can",
-    "attribute" : "climb trees"
+    "fact" : "it can climb trees"
   },
   "yesNode" : {
     "element" : {
       "type" : "fact",
-      "auxiliaryVerb" : "is",
-      "attribute" : "a domestic animal"
+      "fact" : "it is a domestic animal"
     },
     "yesNode" : {
       "element" : {
         "type" : "fact",
-        "auxiliaryVerb" : "has",
-        "attribute" : "long arms"
+        "fact" : "it has long arms"
       },
       "yesNode" : {
         "element" : {
-          "type" : "Noun",
-          "text" : "ape",
-          "indefiniteArticle" : "an"
+          "type" : "Animal",
+          "nounWithIndefiniteArticle" : "an ape"
         }
       },
       "noNode" : {
         "element" : {
-          "type" : "Noun",
-          "text" : "cat",
-          "indefiniteArticle" : "a"
+          "type" : "Animal",
+          "nounWithIndefiniteArticle" : "a cat"
         }
       }
     },
     "noNode" : {
       "element" : {
         "type" : "fact",
-        "auxiliaryVerb" : "is",
-        "attribute" : "an insect"
+        "fact" : "it is an insect"
       },
       "yesNode" : {
         "element" : {
-          "type" : "Noun",
-          "text" : "bug",
-          "indefiniteArticle" : "a"
+          "type" : "Animal",
+          "nounWithIndefiniteArticle" : "a bug"
         }
       },
       "noNode" : {
         "element" : {
           "type" : "fact",
-          "auxiliaryVerb" : "is",
-          "attribute" : "a bird"
+          "fact" : "it is a bird"
         },
         "yesNode" : {
           "element" : {
-            "type" : "Noun",
-            "text" : "blackbird",
-            "indefiniteArticle" : "a"
+            "type" : "Animal",
+            "nounWithIndefiniteArticle" : "a blackbird"
           }
         },
         "noNode" : {
           "element" : {
-            "type" : "Noun",
-            "text" : "wolf",
-            "indefiniteArticle" : "a"
+            "type" : "Animal",
+            "nounWithIndefiniteArticle" : "a wolf"
           }
         }
       }
@@ -70,21 +60,18 @@
   "noNode" : {
     "element" : {
       "type" : "fact",
-      "auxiliaryVerb" : "can",
-      "attribute" : "lay eggs"
+      "fact" : "it can lay eggs"
     },
     "yesNode" : {
       "element" : {
-        "type" : "Noun",
-        "text" : "chicken",
-        "indefiniteArticle" : "a"
+        "type" : "Animal",
+        "nounWithIndefiniteArticle" : "a chicken"
       }
     },
     "noNode" : {
       "element" : {
-        "type" : "Noun",
-        "text" : "badger",
-        "indefiniteArticle" : "a"
+        "type" : "Animal",
+        "nounWithIndefiniteArticle" : "a badger"
       }
     }
   }

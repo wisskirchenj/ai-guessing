@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 public class DataStorage {
 
-    private static final String FILE_PREFIX = "animals.";
+    private static final String FILE_PREFIX = "animals";
     private ObjectMapper objectMapper;
 
     @SuppressWarnings("unused")
@@ -33,8 +33,14 @@ public class DataStorage {
                 ? objectMapper.readValue(new File(getFilename()), Node.class) : null);
     }
 
+    /**
+     * load and store localized versions by appending "_<language>" to the filepath. English gets no appendix.
+     */
     private String getFilename() {
-        return FILE_PREFIX + dataType.toString().toLowerCase();
+        var language = System.getProperty("user.language");
+        return FILE_PREFIX
+               + ("en".equals(language) ? "" : "_" + language)
+               + "." + dataType.toString().toLowerCase();
     }
 
     private void initializeObjectMapper() {

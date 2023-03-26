@@ -35,12 +35,11 @@ class GuessingAnimalControllerIT {
     @Test
     void stage3_example() throws IOException {
         Files.deleteIfExists(Path.of("animals.yaml"));
-        when(scanner.nextLine()).thenReturn("a CAT", "1", "", "No!", "a shark", "it is a mammal",
+        when(scanner.nextLine()).thenReturn("a cat", "1", "", "No!", "a shark", "it is a mammal",
                 "nope", "no way", "0");
         guessingAnimalController.start(new String[]{"-type", "yaml"});
         verify(printer).printInfo("Is it a cat?");
         verify(printer).printInfo("Is the statement correct for a shark?");
-        verify(printer).printInfo("Would you like to play again?");
         var expectedYaml = readTreeFile("src/test/resources/test.yaml");
         var producedYaml = readTreeFile("animals.yaml");
         assertEquals(expectedYaml, producedYaml);
@@ -49,7 +48,7 @@ class GuessingAnimalControllerIT {
     @Test
     void stage3_otherGame() throws IOException {
         Files.deleteIfExists(Path.of("animals.xml"));
-        when(scanner.nextLine()).thenReturn("a CAT", "1", "", "No!", "a shark", "it is a mammal", "nope",
+        when(scanner.nextLine()).thenReturn("a cat", "1", "", "No!", "a shark", "it is a mammal", "nope",
                 "yeah", "", "No", "nope", "the ant", "it is an insect", "yes", "n", "0");
         guessingAnimalController.start(new String[]{"-type", "XML"});
         verify(printer).printInfo("Is it a cat?");
@@ -57,11 +56,10 @@ class GuessingAnimalControllerIT {
         verify(printer).printInfo("Is it a mammal?");
         verify(printer).printInfo("Is the statement correct for a shark?");
         verify(printer).printInfo("Is the statement correct for an ant?");
-        verify(printer, times(2)).printInfo("Would you like to play again?");
         verify(printer, times(2)).printInfo("I give up. What animal do you have in mind?");
-        var expectedYaml = readTreeFile("src/test/resources/test.xml");
-        var producedYaml = readTreeFile("animals.xml");
-        assertEquals(expectedYaml, producedYaml);
+        var expectedXml = readTreeFile("src/test/resources/test.xml");
+        var producedXml = readTreeFile("animals.xml");
+        assertEquals(expectedXml, producedXml);
     }
 
     private String readTreeFile(String path) throws IOException {

@@ -15,17 +15,17 @@ class GreetingTest {
 
     static Stream<Arguments> greetingCorrespondsToDaytime() {
         return Stream.of(
-                Arguments.of("Good morning", LocalTime.of(5, 0,0)),
-                Arguments.of("Good morning", LocalTime.of(8, 29)),
-                Arguments.of("Good morning", LocalTime.of(11, 59,59)),
-                Arguments.of("Good afternoon", LocalTime.of(12, 0)),
-                Arguments.of("Good afternoon", LocalTime.of(17, 59,59)),
-                Arguments.of("Good evening", LocalTime.of(18, 0)),
-                Arguments.of("Good evening", LocalTime.of(23, 59)),
-                Arguments.of("Hi, Early Bird", LocalTime.of(3, 0)),
-                Arguments.of("Hi, Early Bird", LocalTime.of(4, 59, 49)),
-                Arguments.of("Hi, Night Owl", LocalTime.of(0, 0, 0)),
-                Arguments.of("Hi, Night Owl", LocalTime.of(2, 59, 49))
+                Arguments.of("Good morning!", LocalTime.of(5, 0,0)),
+                Arguments.of("Good morning!", LocalTime.of(8, 29)),
+                Arguments.of("Good morning!", LocalTime.of(11, 59,59)),
+                Arguments.of("Good afternoon!", LocalTime.of(12, 0)),
+                Arguments.of("Good afternoon!", LocalTime.of(17, 59,59)),
+                Arguments.of("Good evening!", LocalTime.of(18, 0)),
+                Arguments.of("Good evening!", LocalTime.of(23, 59)),
+                Arguments.of("Hi Early Bird!", LocalTime.of(3, 0)),
+                Arguments.of("Hi Early Bird!", LocalTime.of(4, 59, 49)),
+                Arguments.of("Hi Night Owl!", LocalTime.of(0, 0, 0)),
+                Arguments.of("Hi Night Owl!", LocalTime.of(2, 59, 49))
         );
     }
 

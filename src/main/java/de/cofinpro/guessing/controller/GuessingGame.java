@@ -2,13 +2,13 @@ package de.cofinpro.guessing.controller;
 
 import de.cofinpro.guessing.decisiontree.Node;
 import de.cofinpro.guessing.io.ConsolePrinter;
-import de.cofinpro.guessing.nlp.ClarificationQuestion;
+import de.cofinpro.guessing.io.ResourceProvider;
+import de.cofinpro.guessing.nlp.Animal;
 import de.cofinpro.guessing.nlp.DistinguishingFact;
-import de.cofinpro.guessing.nlp.JoyExpression;
-import de.cofinpro.guessing.nlp.Noun;
 import de.cofinpro.guessing.nlp.YesNoAnswer;
 
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 import static de.cofinpro.guessing.nlp.YesNoAnswer.Choice.YES;
 
@@ -18,13 +18,6 @@ import static de.cofinpro.guessing.nlp.YesNoAnswer.Choice.YES;
  * stored from previous game rounds.
  */
 public class GuessingGame {
-
-    private static final String DISTINGUISH_EXAMPLE_TEXT = """
-            The examples of a statement:
-             - It can fly
-             - It has a horn
-             - It is a mammal
-            """;
 
     private Node decisionTree;
     private final ConsolePrinter consolePrinter;
@@ -41,18 +34,18 @@ public class GuessingGame {
      * knowledge tree may be expanded in AI-manor during the game rounds, it is returned to the calling controller.
      */
     public Node play() {
-        consolePrinter.printInfo("Let's play a game!");
+        consolePrinter.printInfo(ResourceProvider.INSTANCE.get("game.letsPlay"));
         gameLoop();
         return decisionTree;
     }
 
     private void gameLoop() {
         do {
-            consolePrinter.printInfo("You think of an animal, and I guess it.\n" +
-                                     "Press enter when you're ready.");
+            consolePrinter.printInfo("%s%n%s".formatted(ResourceProvider.INSTANCE.get("game.think"),
+                                     ResourceProvider.INSTANCE.get("game.enter")));
             scanner.nextLine();
             playGame();
-        } while (userAnswersYes("Would you like to play again?"));
+        } while (userAnswersYes(ResourceProvider.INSTANCE.getRandom("game.again")));
     }
 
     /**
@@ -70,7 +63,8 @@ public class GuessingGame {
 
     private void handleGuessedAnswer(Node currentNode, boolean guessed) {
         if (guessed) {
-            consolePrinter.printInfo("{} I guessed it :-)", new JoyExpression().text());
+            consolePrinter.printInfo("{} {}", ResourceProvider.INSTANCE.getRandom("animal.nice"),
+                    ResourceProvider.INSTANCE.getRandom("game.win"));
         } else {
             addAnimal(currentNode);
         }
@@ -97,62 +91,61 @@ public class GuessingGame {
     }
 
     private void sayLearnings(DistinguishingFact distinguishingFact) {
-        consolePrinter.printInfo("I learned the following facts about animals:");
+        consolePrinter.printInfo(ResourceProvider.INSTANCE.get("game.learned"));
         consolePrinter.printInfo(distinguishingFact.learnings());
-        consolePrinter.printInfo("I can distinguish these animals by asking the question:");
+        consolePrinter.printInfo(ResourceProvider.INSTANCE.get("game.distinguish"));
         consolePrinter.printInfo(" - {}", distinguishingFact.question());
         sayLearningJoy();
     }
 
     private Node buildDistinguishingFactNode(Node firstAnimalNode, Node secondAnimalNode) {
-        var firstAnimal = (Noun) firstAnimalNode.getElement();
-        var secondAnimal = (Noun) secondAnimalNode.getElement();
+        var firstAnimal = (Animal) firstAnimalNode.getElement();
+        var secondAnimal = (Animal) secondAnimalNode.getElement();
         var distinguishingFact = queryDistinguishingFact(firstAnimal, secondAnimal);
         return new Node(distinguishingFact)
                 .setYesNode(distinguishingFact.isTrueForSecondAnimal() ? secondAnimalNode : firstAnimalNode)
                 .setNoNode(distinguishingFact.isTrueForSecondAnimal() ? firstAnimalNode : secondAnimalNode);
     }
 
-    private DistinguishingFact queryDistinguishingFact(Noun firstAnimal, Noun secondAnimal) {
-        var fact = promptForDistinguishingFact(firstAnimal, secondAnimal);
-        while (fact == null) {
-            consolePrinter.printInfo(DISTINGUISH_EXAMPLE_TEXT);
-            fact = promptForDistinguishingFact(firstAnimal, secondAnimal);
-        }
-        var trueForSecond = userAnswersYes("Is the statement correct for %s?"
-                .formatted(secondAnimal.withIndefiniteArticle()));
+    private DistinguishingFact queryDistinguishingFact(Animal firstAnimal, Animal secondAnimal) {
+        var fact = promptUntilValid("statement.error",
+                () -> promptForDistinguishingFact(firstAnimal, secondAnimal));
+        var trueForSecond = userAnswersYes(
+                ResourceProvider.INSTANCE.getFormatted("game.isCorrect", secondAnimal.withIndefiniteArticle()));
         fact.setTrueForSecondAnimal(trueForSecond);
         sayLearnings(fact);
         return fact;
     }
 
-    private DistinguishingFact promptForDistinguishingFact(Noun first, Noun second) {
-        consolePrinter.printInfo("""
-                Specify a fact that distinguishes {} from {}.
-                The sentence should satisfy one of the following templates:
-                - It can ...
-                - It has ...
-                - It is a/an ...""",
-                first.withIndefiniteArticle(), second.withIndefiniteArticle());
+    private DistinguishingFact promptForDistinguishingFact(Animal first, Animal second) {
+        consolePrinter.printInfo(ResourceProvider.INSTANCE.getFormatted("statement.prompt",
+                first.withIndefiniteArticle(), second.withIndefiniteArticle()));
         return DistinguishingFact.from(scanner.nextLine(), first, second);
     }
 
     private boolean userAnswersYes(String question) {
         consolePrinter.printInfo(question);
-        var answer = YesNoAnswer.from(scanner.nextLine());
-        while (answer == null) {
-            consolePrinter.printInfo(new ClarificationQuestion().text());
-            answer = YesNoAnswer.from(scanner.nextLine());
-        }
+        var answer = promptUntilValid("ask.again", () -> YesNoAnswer.from(scanner.nextLine()));
         return YES.equals(answer.text());
     }
 
     private Node promptForAnimal() {
-        consolePrinter.printInfo("I give up. What animal do you have in mind?");
-        return new Node(Noun.from(scanner.nextLine()));
+        consolePrinter.printInfo(ResourceProvider.INSTANCE.get("game.giveUp"));
+        var animal = promptUntilValid("animal.error", () -> Animal.from(scanner.nextLine()));
+        return new Node(animal);
+    }
+
+    private <T> T promptUntilValid(String promptErrorMessageKey, Supplier<T> factory) {
+        T answer = factory.get();
+        while (answer == null) {
+            consolePrinter.printInfo(ResourceProvider.INSTANCE.getRandom(promptErrorMessageKey));
+            answer = factory.get();
+        }
+        return answer;
     }
 
     private void sayLearningJoy() {
-        consolePrinter.printInfo("{} I've learned so much about animals!", new JoyExpression().text());
+        consolePrinter.printInfo("{} {}", ResourceProvider.INSTANCE.getRandom("animal.nice"),
+                ResourceProvider.INSTANCE.get("animal.learnedMuch"));
     }
 }

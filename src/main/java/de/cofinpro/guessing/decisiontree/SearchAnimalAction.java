@@ -1,7 +1,7 @@
 package de.cofinpro.guessing.decisiontree;
 
+import de.cofinpro.guessing.nlp.Animal;
 import de.cofinpro.guessing.nlp.DistinguishingFact;
-import de.cofinpro.guessing.nlp.Noun;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -13,7 +13,7 @@ import java.util.List;
 public class SearchAnimalAction extends KnowledgeTreeDfs {
 
     private final List<String> facts = new ArrayList<>();
-    private Noun toSearch;
+    private Animal toSearch;
 
     public SearchAnimalAction(Node knowledgeTree) {
         super(knowledgeTree);
@@ -39,8 +39,8 @@ public class SearchAnimalAction extends KnowledgeTreeDfs {
         var positionIterator = treePosition.descendingIterator();
         while (!currentNode.isLeaf()) {
             var trueForCurrentFactAndAnimal = positionIterator.next() == TraversalNodeInfo.Branch.YES;
-            var factNode = (DistinguishingFact) currentNode.getElement();
-            facts.add(trueForCurrentFactAndAnimal  ? factNode.asStatement() : factNode.asNegativeStatement());
+            var fact = (DistinguishingFact) currentNode.getElement();
+            facts.add(trueForCurrentFactAndAnimal  ? fact.asStatement() : fact.asNegativeStatement());
             currentNode = trueForCurrentFactAndAnimal ? currentNode.getYesNode() : currentNode.getNoNode();
         }
     }
@@ -50,7 +50,7 @@ public class SearchAnimalAction extends KnowledgeTreeDfs {
      * @param searchAnimal the animal to search for.
      * @return empty list if animal not found - else its facts as String list.
      */
-    public List<String> getFacts(Noun searchAnimal) {
+    public List<String> getFacts(Animal searchAnimal) {
         toSearch = searchAnimal;
         super.traverseTree();
         return facts;

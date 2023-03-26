@@ -1,29 +1,24 @@
 <Node>
   <element type="fact">
-    <auxiliaryVerb>is</auxiliaryVerb>
-    <attribute>a mammal</attribute>
+    <fact>it is a mammal</fact>
   </element>
   <yesNode>
-    <element type="Noun">
-      <text>cat</text>
-      <indefiniteArticle>a</indefiniteArticle>
+    <element type="Animal">
+      <nounWithIndefiniteArticle>a cat</nounWithIndefiniteArticle>
     </element>
   </yesNode>
   <noNode>
     <element type="fact">
-      <auxiliaryVerb>is</auxiliaryVerb>
-      <attribute>an insect</attribute>
+      <fact>it is an insect</fact>
     </element>
     <yesNode>
-      <element type="Noun">
-        <text>ant</text>
-        <indefiniteArticle>an</indefiniteArticle>
+      <element type="Animal">
+        <nounWithIndefiniteArticle>an ant</nounWithIndefiniteArticle>
       </element>
     </yesNode>
     <noNode>
-      <element type="Noun">
-        <text>shark</text>
-        <indefiniteArticle>a</indefiniteArticle>
+      <element type="Animal">
+        <nounWithIndefiniteArticle>a shark</nounWithIndefiniteArticle>
       </element>
     </noNode>
   </noNode>

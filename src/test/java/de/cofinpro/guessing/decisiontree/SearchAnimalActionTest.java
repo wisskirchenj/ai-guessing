@@ -1,7 +1,7 @@
 package de.cofinpro.guessing.decisiontree;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import de.cofinpro.guessing.nlp.Noun;
+import de.cofinpro.guessing.nlp.Animal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,12 +24,12 @@ class SearchAnimalActionTest {
 
     @Test
     void whenTestJsonWithAnimalNotIn_EmptyFactsListReturned() {
-        assertEquals(List.of(), action.getFacts(Noun.from("a hare")));
+        assertEquals(List.of(), action.getFacts(Animal.from("a hare")));
     }
 
     @Test
     void whenTestJsonWithAnimalIn_CorrectFactsListReturned() {
-        assertEquals(List.of("It can climb trees.", "It is a domestic animal.", "It doesn't have long arms."),
-                action.getFacts(Noun.from("the cat")));
+        assertEquals(List.of("It can climb trees", "It is a domestic animal", "It doesn't have long arms"),
+                action.getFacts(Animal.from("the cat")));
     }
 }

@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type",
-        defaultImpl = Noun.class
+        defaultImpl = Animal.class
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Noun.class),
+        @JsonSubTypes.Type(value = Animal.class),
         @JsonSubTypes.Type(value = DistinguishingFact.class, name = "fact")
 })
 public interface QuestionProvider {

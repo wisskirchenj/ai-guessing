@@ -1,13 +1,12 @@
 package de.cofinpro.guessing.decisiontree;
 
-import de.cofinpro.guessing.nlp.Noun;
-
-import java.util.Locale;
+import de.cofinpro.guessing.io.ResourceProvider;
+import de.cofinpro.guessing.nlp.Animal;
 
 /**
  * Depth First Search derived action class, that creates a statistics record of the knowledge tree.
  */
-public class TreeStatisticsAction  extends KnowledgeTreeDfs {
+public class TreeStatisticsAction extends KnowledgeTreeDfs {
 
     private String rootNode;
     private int numberOfNodes;
@@ -27,7 +26,7 @@ public class TreeStatisticsAction  extends KnowledgeTreeDfs {
         if (current.position().isEmpty()) { // the root node
             rootNode = current.element().asStatement();
         }
-        if (current.element() instanceof Noun) {
+        if (current.element() instanceof Animal) {
             numberOfAnimals++;
             evaluateHeightAndDepth(current);
         } else {
@@ -48,9 +47,9 @@ public class TreeStatisticsAction  extends KnowledgeTreeDfs {
      */
     public Statistics getStats() {
         super.traverseTree();
-        var averageTwoDigitPrecisionTimes10 = sumAnimalDepth * 10 / numberOfAnimals;
+        var averageTwoDigitPrecisionTimes100 = sumAnimalDepth * 100 / numberOfAnimals;
         return new Statistics(rootNode, numberOfNodes, numberOfAnimals, numberOfFacts, treeHeight,
-                minAnimalDepth, averageTwoDigitPrecisionTimes10 / 10.0f);
+                minAnimalDepth, averageTwoDigitPrecisionTimes100 / 100.0f);
     }
 
     /**
@@ -67,24 +66,24 @@ public class TreeStatisticsAction  extends KnowledgeTreeDfs {
     ) {
         public String getFormatted() {
             return getStatLine(rootNode())
-                   + getStatLine("total number of nodes", numberOfNodes())
-                   + getStatLine("total number of animals", numberOfAnimals())
-                   + getStatLine("total number of statements", numberOfFacts())
-                   + getStatLine("height of the tree", treeHeight())
-                   + getStatLine("minimum animal's depth", minAnimalDepth())
+                   + getStatLine("tree.stats.nodes", numberOfNodes())
+                   + getStatLine("tree.stats.animals", numberOfAnimals())
+                   + getStatLine("tree.stats.statements", numberOfFacts())
+                   + getStatLine("tree.stats.height", treeHeight())
+                   + getStatLine("tree.stats.minimum", minAnimalDepth())
                    + getStatLine(averageAnimalDepth());
         }
 
         private String getStatLine(String value) {
-            return "- %-29s%s%n".formatted("root node", value);
+            return ResourceProvider.INSTANCE.getFormatted("tree.stats.root", value) + "\n";
         }
 
         private String getStatLine(String label, int value) {
-            return "- %-29s%d%n".formatted(label, value);
+            return ResourceProvider.INSTANCE.getFormatted(label, value) + "\n";
         }
 
         private String getStatLine(float value) {
-            return String.format(Locale.US, "- %-29s%.1f","average animal's depth", value);
+            return ResourceProvider.INSTANCE.getFormatted("tree.stats.average", value);
         }
     }
 }

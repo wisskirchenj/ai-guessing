@@ -1,14 +1,15 @@
 package de.cofinpro.guessing.nlp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.cofinpro.guessing.io.ResourceProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.regex.Pattern;
+import static de.cofinpro.guessing.io.ResourceProvider.capitalize;
 
 /**
- * class that parses a user given distinguishing statement for two animals (stored as Noun) and models their
+ * class that parses a user given distinguishing statement for two animals (stored as Animal) and models their
  * distinguishing fact.
  */
 @Setter
@@ -16,36 +17,30 @@ import java.util.regex.Pattern;
 @Accessors(chain = true)
 public class DistinguishingFact implements QuestionProvider {
 
-    private static final Pattern factPattern = Pattern.compile("it (is|has|can) (.*?)[.!?]?");
-
     @JsonIgnore
-    private final Noun[] animals = new Noun[2];
-    private String auxiliaryVerb;
-    private String attribute;
+    private final Animal[] animals = new Animal[2];
+    private String fact;
     @JsonIgnore
     private boolean trueForSecondAnimal;
 
-    private DistinguishingFact setAnimals(Noun firstAnimal, Noun secondAnimal) {
+    private DistinguishingFact setAnimals(Animal firstAnimal, Animal secondAnimal) {
         animals[0] = firstAnimal;
         animals[1] = secondAnimal;
         return this;
     }
 
-    private String negatedStatementFor(Noun animal) {
-        return " - %s %s %s.".formatted(animal.withDefiniteArticle(), negated(auxiliaryVerb), attribute);
+    private String negatedStatementFor(Animal animal) {
+        return " - " + capitalize(ResourceProvider.INSTANCE
+                .getReplaced("animalFact", negated()).formatted(animal.withDefiniteArticle())) + ".";
     }
 
-    private String positiveStatementFor(Noun animal) {
-        return " - %s %s %s.".formatted(animal.withDefiniteArticle(), auxiliaryVerb, attribute);
+    private String positiveStatementFor(Animal animal) {
+        return " - " + capitalize(ResourceProvider.INSTANCE
+                .getReplaced("animalFact", fact).formatted(animal.withDefiniteArticle())) + ".";
     }
 
-    private String negated(String auxiliaryVerb) {
-        return switch (auxiliaryVerb) {
-            case "is" -> "isn't";
-            case "has" -> "doesn't have";
-            case "can" -> "can't";
-            default -> "";
-        };
+    private String negated() {
+        return ResourceProvider.INSTANCE.getReplaced("negative", fact);
     }
 
     /**
@@ -53,12 +48,7 @@ public class DistinguishingFact implements QuestionProvider {
      */
     @Override
     public String question() {
-        return switch (auxiliaryVerb) {
-            case "is" -> "Is it ";
-            case "has" -> "Does it have ";
-            case "can" -> "Can it ";
-            default -> "";
-        } + attribute + "?";
+        return capitalize(ResourceProvider.INSTANCE.getReplaced("question", fact));
     }
 
     /**
@@ -76,25 +66,24 @@ public class DistinguishingFact implements QuestionProvider {
      * @param input user input
      * @param firstAnimal first animal for this distinguishing fact
      * @param secondAnimal second animal for this distinguishing fact
-     * @return the DistinguishingFact with filled verb, attribute and animals field - or null, if parsing fails.
+     * @return the DistinguishingFact with filled fact field to persist - or null, if parsing fails.
      */
-    public static DistinguishingFact from(String input, Noun firstAnimal, Noun secondAnimal) {
-        var matcher = factPattern.matcher(input.trim().toLowerCase());
-        if (!matcher.matches()) {
+    public static DistinguishingFact from(String input, Animal firstAnimal, Animal secondAnimal) {
+        var fact = input.trim();
+        if (!fact.matches(ResourceProvider.INSTANCE.get("statement.isCorrect")))  {
             return null;
         }
         return new DistinguishingFact()
-                .setAuxiliaryVerb(matcher.group(1))
-                .setAttribute(matcher.group(2))
+                .setFact(ResourceProvider.INSTANCE.getReplaced("statement", fact))
                 .setAnimals(firstAnimal, secondAnimal);
     }
 
     @Override
     public String asStatement() {
-        return "It %s %s.".formatted(auxiliaryVerb, attribute);
+        return capitalize(fact);
     }
 
     public String asNegativeStatement() {
-        return "It %s %s.".formatted(negated(auxiliaryVerb), attribute);
+        return capitalize(negated());
     }
 }

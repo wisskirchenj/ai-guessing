@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NounTest {
+class AnimalTest {
 
     static Stream<Arguments> animalProcessor_processesCorrectly() {
         return Stream.of(
@@ -19,14 +19,20 @@ class NounTest {
                 Arguments.of("an eagle", "the eagle"),
                 Arguments.of("a green chicken", "green chicken"),
                 Arguments.of("a green chicken", "the green chicken"),
-                Arguments.of("an oval bug", "oval bug")
+                Arguments.of("an oval bug", "oval bug"),
+                Arguments.of(null, "a"),
+                Arguments.of(null, "")
         );
     }
 
     @ParameterizedTest
     @MethodSource
     void animalProcessor_processesCorrectly(String expected, String input) {
-        var animal = Noun.from(input);
+        var animal = Animal.from(input);
+        if (expected == null) {
+            assertNull(animal);
+            return;
+        }
         assertNotNull(animal);
         assertEquals(expected, animal.withIndefiniteArticle());
     }

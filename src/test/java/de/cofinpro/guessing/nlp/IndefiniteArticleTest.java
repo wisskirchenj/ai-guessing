@@ -25,8 +25,10 @@ class IndefiniteArticleTest {
 
     @ParameterizedTest
     @MethodSource
-    void whenNounGiven_ArticleAccordingSyntax(String expectedArticle, String noun) {
-        assertEquals(expectedArticle, IndefiniteArticle.forNoun(noun));
+    void whenNounGiven_ArticleAccordingSyntax(String expectedArticle, String input) {
+        var noun = Animal.from(input);
+        assertNotNull(noun);
+        assertEquals(expectedArticle, noun.nounWithIndefiniteArticle().split(" ")[0]);
     }
 
 }
