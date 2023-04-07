@@ -2,13 +2,6 @@ plugins {
     java
 }
 
-dependencies {
-    constraints {
-        val lombokVersion = "1.18.26"
-        implementation("org.projectlombok:lombok:$lombokVersion")
-    }
-}
-
 repositories {
     mavenCentral()
 }
@@ -19,18 +12,20 @@ version = "0.0.1-SNAPSHOT"
 dependencies {
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0")
     implementation("info.picocli:picocli:4.7.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2")
+    val jacksonVersion = "2.14.2"
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
     implementation("org.yaml:snakeyaml:2.0")
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    val lombokVersion = "1.18.26"
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
-
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
 }
 
 tasks.named<Test>("test") {
