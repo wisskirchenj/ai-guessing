@@ -18,3 +18,8 @@ out/
 ### Mac OS ###
 .DS_Store
 HELP.MD
+
+### prog output
+animals*.json
+animals*.xml
+animals*.yaml
